@@ -1,3 +1,6 @@
+import agencias.*
+import viajes.*
+
 class Corsa {
 	var property color
 		
@@ -9,8 +12,11 @@ class Corsa {
 class Standard {
 	var property color = "azul"
 	var peso = 1200
+	var tanque = false
 	
-	method tieneTanque() { return true }	
+	method tieneTanque(_valor) { tanque = _valor }
+	method tieneTanque() { return tanque }
+		
 	method capacidad() {
 		if(self.tieneTanque()) {
 			return 3

@@ -1,0 +1,128 @@
+import vehiculos.*
+import agencias.*
+import viajes.*
+
+describe "test de remisera" {
+	const remisera1 = new Remisera()
+	const remisera2 = new Remisera()
+	/// remisera 1
+	var cachito = new Corsa()
+	var corsa2 = new Corsa()
+	var corsa3 = new Corsa()
+	var autoStandarConTanque1 = new Standard()
+	var autoDistinto = new AutosDistintos()
+	/// remisera 2
+	var autoStandarConTanque2 = new Standard()
+	var autoStandarSinTanque3 = new Standard()
+	var autoStandarSinTanque4 = new Standard()
+	//lleva trafic esta remisera
+	// viajes
+	var viaje7km = new Viaje()
+//	var viaje20km = new Viaje()
+//	var viaje15km = new Viaje()
+//	var viaje30km = new Viaje()
+	var viaje7kmDos = new Viaje()
+	
+	fixture {
+		// para remisera 1
+		cachito.color("rojo")
+		corsa2.color("negro")
+		corsa3.color("verde")
+		autoStandarConTanque1.tieneTanque(true)
+		autoDistinto.capacidad(5)
+		autoDistinto.velocidadMaxima(160)
+		autoDistinto.peso(1200)
+		autoDistinto.color("beige")
+		//
+		remisera1.agregarAFlota(cachito)
+		remisera1.agregarAFlota(corsa2)
+		remisera1.agregarAFlota(corsa3)
+		remisera1.agregarAFlota(autoStandarConTanque1)
+		remisera1.agregarAFlota(autoDistinto)
+		remisera1.valorPorKilometro(3)
+		remisera1.valorViajeMinimo(50)
+		// para remisera 2
+		autoStandarConTanque2.tieneTanque(true)
+		trafic.confInterior(comodo)
+		trafic.confMotor(bataton)
+		//
+		remisera2.agregarAFlota(cachito)
+		remisera2.agregarAFlota(autoStandarConTanque2)
+		remisera2.agregarAFlota(autoStandarSinTanque3)
+		remisera2.agregarAFlota(autoStandarSinTanque4)
+		remisera2.agregarAFlota(trafic)
+		//
+		viaje7km.agregarColoresIncompatibles("azul")
+		viaje7km.agregarColoresIncompatibles("verde")
+		viaje7km.cantidadDePasajero(3)
+		viaje7km.kilometros(2900)
+		viaje7km.tiempoMaximo(22)
+		viaje7kmDos.agregarColoresIncompatibles("azul")
+		viaje7kmDos.agregarColoresIncompatibles("beige")
+		viaje7kmDos.cantidadDePasajero(1)
+		viaje7kmDos.kilometros(1500)
+		viaje7kmDos.tiempoMaximo(12)
+		
+	}
+	
+	test "peso flota remisera1" {
+		assert.equals(6450,remisera1.pesoTotalFlota())
+	}
+	
+	test "peso flota remisera2" {
+		assert.equals(10250,remisera2.pesoTotalFlota())
+	}
+	
+	test "es recomendable remisera1" {
+		assert.that(remisera1.esRecomendable())
+	}
+	
+	test "es recomendable remisera2" {
+		assert.that(remisera2.esRecomendable())
+	}
+	
+	test "cantidad de pasajero que puede transportar remisera1 considerando velocidad 140" {
+		assert.equals(5,remisera1.capacidadTotalYendoA(160))
+		assert.equals(17,remisera1.capacidadTotalYendoA(140))
+	}
+	
+	test "cantidad de pasajero que puede transportar remisera2 considerando velocidad 140" {
+		assert.equals(4,remisera2.capacidadTotalYendoA(140))
+	}
+	
+	test "color del auto mas rapido en remisera1 autoDistinto color beige" {
+		assert.equals("beige",remisera1.colorDelAutoMasRapido())
+	}
+	
+	test "color del auto mas rapido en remisera2 cachito color rojo" {
+		assert.equals("rojo",remisera2.colorDelAutoMasRapido())
+	}
+	
+	test "si cachito puede hacer el viaje7km" {
+		assert.that(viaje7km.puedeHacerViaje(cachito))
+		assert.that(remisera1.puedeHacerUnViaje(cachito,viaje7km))	
+	}
+	
+	test "lugares libres en viaje viaje7kmDos libres=3 usando cachito"{
+		remisera1.registrarViaje(viaje7kmDos,cachito)
+		
+		assert.equals(3,remisera1.lugaresLibres(viaje7kmDos))
+	}
+	
+	test "registra viaje y sabaer cuanto hizo cachito en remisera1" {
+		remisera1.registrarViaje(viaje7km,cachito)
+		remisera1.registrarViaje(viaje7kmDos,cachito)
+		
+		assert.equals(2,remisera1.viajesRealizado(cachito))
+		
+	}
+	
+	test "cuanto pagar un viaje que hizo cachito" {
+		remisera1.registrarViaje(viaje7km,cachito)
+		
+		assert.equals(cachito,viaje7km.autoQueLoHizo())
+		assert.equals(8700,remisera1.pagarAUnAuto(viaje7km))
+	}
+	
+	
+}
