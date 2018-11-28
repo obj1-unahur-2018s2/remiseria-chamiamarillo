@@ -1,9 +1,8 @@
 import vehiculos.*
 import agencias.*
 
-
 class Viaje {
-	var property coloresIncompatibles = #{}
+	var coloresIncompatibles = #{}
 	var property kilometros
 	var property tiempoMaximo
 	var property cantidadDePasajero

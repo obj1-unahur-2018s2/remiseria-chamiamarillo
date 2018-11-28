@@ -124,5 +124,9 @@ describe "test de remisera" {
 		assert.equals(8700,remisera1.pagarAUnAuto(viaje7km))
 	}
 	
+	test "cantidad de autos de la remisera tomando en cuenta un color" {
+		assert.equals(1,remisera1.cantidadDeAutosPorColor("rojo"))
+	}
+	
 	
 }

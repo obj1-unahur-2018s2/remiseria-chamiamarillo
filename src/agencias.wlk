@@ -60,13 +60,15 @@ class Remisera {
 	method pagarAUnAuto(_viaje) {
 		var viajekil
 		viajekil = _viaje.kilometros() * valorPorKilometro
-		if(viajekil > valorViajeMinimo ){
+		if(viajekil > valorViajeMinimo) {
 			return _viaje.kilometros() * valorPorKilometro 
 		}else{
 			return valorViajeMinimo
 		}
 	}
 	
-	
+	method cantidadDeAutosPorColor(_color) {
+		return lista.filter({ a => a.color() == _color }).size()
+	}
 	
 }
